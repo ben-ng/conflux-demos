@@ -6,6 +6,7 @@ var Hapi = require('hapi')
   , assert = require('assert')
   , async = require('async')
   , _ = require('lodash')
+  , enhanceServer = require('gaggle').enhanceServerForSocketIOChannel
   , build = require('./build')
   , loadDemos = require('./demo-index')
   , indexTemplateSource = fs.readFileSync('templates/index.hbs').toString()
@@ -49,6 +50,9 @@ async.auto({
     }
   }, 'built demos')]
 }, function (err, results) {
+  var closeServer
+    , onQuit
+
   assert.ifError(err)
 
   // Register demo routes
@@ -93,6 +97,21 @@ async.auto({
       }))
     }
   })
+
+  closeServer = enhanceServer(server.listener)
+
+  onQuit = function onQuit () {
+    server.listener.once('close', function () {
+      console.log('\nServer cleanly exited')
+      process.exit(0)
+    })
+
+    closeServer()
+  }
+
+  process.on('SIGINT', onQuit)
+  process.on('SIGTERM', onQuit)
+  process.on('SIGHUP', onQuit)
 
   server.start(function () {
     console.log('Server running at:' + server.info.uri + ' (' + (Date.now() - startedAt) + 'ms)')
