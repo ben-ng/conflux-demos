@@ -42,7 +42,7 @@ class GameState extends EventEmitter {
     , clusterSize: 2
     , channel: {
         name: 'socket.io'
-      , host: process.env.NODE_ENV === 'production' ?
+      , host: window.location.href.indexOf('herokuapp') > -1 ?
               'https://conflux-demos.herokuapp.com' :
               'http://localhost:' + (process.env.PORT || 8080)
       , channel: opts.room
