@@ -1,7 +1,8 @@
 var webpack = require('webpack')
   , path = require('path')
+  , opts
 
-module.exports = {
+opts = {
   module: {
     loaders: [
       {
@@ -15,7 +16,10 @@ module.exports = {
       }
     ]
   }
-, plugins: [
+}
+
+if (process.env.NODE_ENV === 'production') {
+  opts.plugins = [
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
         except: ['$super', '$', 'exports', 'require']
@@ -23,3 +27,5 @@ module.exports = {
     })
   ]
 }
+
+module.exports = opts
