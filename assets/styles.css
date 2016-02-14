@@ -6,3 +6,27 @@ body {
 #demo-wrap {
   padding: 1em;
 }
+
+a {
+  text-decoration: none;
+}
+
+h1 a:link,
+h1 a:visited {
+  color: #073140;
+}
+
+h1 a:hover,
+h1 a:active {
+  color: #0E627F;
+}
+
+a:link,
+a:visited {
+  color: #19B1E5;
+}
+
+a:hover,
+a:active {
+  color: #1CC5FF;
+}
