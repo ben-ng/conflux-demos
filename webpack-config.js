@@ -3,7 +3,19 @@ var webpack = require('webpack')
   , opts
 
 opts = {
-  module: {
+  node: {
+    console: true
+  , global: true
+  , process: true
+  , Buffer: true
+  , __filename: 'mock'
+  , __dirname: 'mock'
+  , setImmediate: true
+  , net: 'empty'
+  , tls: 'empty'
+  , dns: 'empty'
+  }
+, module: {
     loaders: [
       {
         test: /\.jsx?$/,
