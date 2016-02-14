@@ -16,11 +16,11 @@ var Hapi = require('hapi')
   , startedAt = Date.now()
   , logWrap = function logWrap (fn, message) {
       return function (next) {
-        fn(function () {
+        fn.apply(null, [function () {
           console.log('  ' + message + ' (' + (Date.now() - startedAt) + 'ms)')
 
           next.apply(null, Array.prototype.slice.call(arguments))
-        })
+        }].concat(Array.prototype.slice.call(arguments, 1)))
       }
     }
 
@@ -41,7 +41,7 @@ async.auto({
   }, 'checked for dist directory')
 , build: ['distExists', logWrap(function (next, results) {
     // Don't rebuild in prod unless dist is missing for some reason
-    if (process.env.NODE_ENV === 'production' && results.distExists) {
+    if (results.distExists && process.env.NODE_ENV === 'production') {
       next()
     }
     else {
