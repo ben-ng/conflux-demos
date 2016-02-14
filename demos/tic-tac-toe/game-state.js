@@ -107,7 +107,7 @@ class GameState extends EventEmitter {
             return new Error('The game is over, click "Forfeit" to reset the game')
           }
 
-          if (find(curState.board, -1) != null) {
+          if (find(curState.board, p => p === -1) != null) {
             return new Error('Can\'t tie until all cells are filled!')
           }
 
@@ -182,4 +182,4 @@ class GameState extends EventEmitter {
 }
 
 export default GameState
-export {getDefaultState}
+export {getDefaultState, gameOver}

@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {find, bind} from 'lodash'
+import {gameOver} from './game-state'
 
 class GameBoard extends React.Component {
 
@@ -48,8 +49,8 @@ class GameBoard extends React.Component {
     const joinLink = `${window.location.href.match(/^[^?]+/)[0]}?1${this.props.room}`
 
     const cellStyle = {
-      width: '99px'
-    , height: '99px'
+      width: '100px'
+    , height: '100px'
     , borderRight: '1px solid #000'
     , borderBottom: '1px solid #000'
     , float: 'left'
@@ -59,8 +60,8 @@ class GameBoard extends React.Component {
     }
 
     const gridStyle = {
-      width: '300px'
-    , height: '300px'
+      width: '301px'
+    , height: '301px'
     , borderTop: '1px solid #000'
     , borderLeft: '1px solid #000'
     }
@@ -102,8 +103,15 @@ class GameBoard extends React.Component {
         }
       </div>
     const playerOneMsg = <div>
-            <p>Join this game with this code: <pre style={{fontSize: '2em'}}>{this.props.room}</pre></p>
-            <p>Or open this link in a new tab, or on a different device: <a target="_blank" href={joinLink}>{joinLink}</a></p>
+            <p>
+              Join this game with this code:
+              <pre style={{fontSize: '1.2em'}}>{this.props.room}</pre>
+            </p>
+            <p>
+              You can also open this link in a new tab, or another device:<br />
+              <a target="_blank" href={joinLink}>{joinLink}</a><br /><br />
+              Send it to a friend!
+            </p>
           </div>
     const playerTwoMsg = <div><p>Trying to join the game...</p></div>
 
@@ -120,10 +128,15 @@ class GameBoard extends React.Component {
       {this.props.playerTwoJoined ? grid: joinMsg}
       <div>
         <p>
-          <button disabled={this.props.move % 2 !== this.props.player}
-                  onClick={this.props.onForfeit}>Forfeit this game</button>
-          <button disabled={this.props.move % 2 !== this.props.player || find(this.props.board, -1) != null}
-                  onClick={this.props.onTie}>Declare a tie</button><br /><br />
+          {this.props.move % 2 !== this.props.player || !gameOver(this.props.board) ?
+            null :
+            <button onClick={this.props.onForfeit}>Forfeit this game</button>}
+
+          {this.props.move % 2 !== this.props.player || find(this.props.board, p => p === -1) != null || gameOver(this.props.board) ?
+            null :
+            <button onClick={this.props.onTie}>Declare a tie</button>}
+
+          <br /><br />
           Turn: {this.props.move % 2 === this.props.player ? 'Yours' : 'Opponent\'s'}<br />
           Move: {this.props.move + 1}<br />
           Game: {this.props.game + 1}
@@ -137,11 +150,6 @@ class GameBoard extends React.Component {
           </div>: null}
         </p>
       </div>
-      <h3>About This Demo</h3>
-      <p>
-        This game is a distributed system that runs on two nodes.&nbsp;
-        No server is needed, and the game's logic is implemented in fewer than 200 lines of code.
-      </p>
     </div>
   }
 }
