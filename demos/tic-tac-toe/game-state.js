@@ -1,11 +1,11 @@
 import conflux from 'conflux'
 import uuid from 'uuid'
 import {EventEmitter} from 'events'
-import _ from 'lodash'
+import {fill, find} from 'lodash'
 
 const getDefaultState = () => {
   return {
-    board: _.fill(new Array(9), -1)
+    board: fill(new Array(9), -1)
   , move: 0
   , game: 0
   , playerTwoJoined: false
@@ -96,6 +96,26 @@ class GameState extends EventEmitter {
           , player: player
           }
         }
+      , tie: function (player, idx) {
+          const curState = this.getProvisionalState()
+
+          if (curState.move % 2 !== player) {
+            return new Error('It is not your turn!')
+          }
+
+          if (gameOver(curState.board)) {
+            return new Error('The game is over, click "Forfeit" to reset the game')
+          }
+
+          if (find(curState.board, -1) != null) {
+            return new Error('Can\'t tie until all cells are filled!')
+          }
+
+          return {
+            type: 'TIE'
+          , player: player
+          }
+        }
       }
     , reduce: this.reducer
     })
@@ -124,10 +144,17 @@ class GameState extends EventEmitter {
       break
 
       case 'FORFEIT':
-        state.board = _.fill(new Array(9), -1)
+        state.board = fill(new Array(9), -1)
         state.move = 0
         state.game = state.game + 1
         state.gameLosers.push(action.player)
+      break
+
+      case 'TIE':
+        state.board = fill(new Array(9), -1)
+        state.move = 0
+        state.game = state.game + 1
+        state.gameLosers.push(-1)
       break
 
       default:
@@ -143,6 +170,10 @@ class GameState extends EventEmitter {
 
   forfeit (player, cb) {
     this._conflux.perform('forfeit', [player], 10000, cb)
+  }
+
+  tie (player, cb) {
+    this._conflux.perform('tie', [player], 10000, cb)
   }
 
   join (cb) {

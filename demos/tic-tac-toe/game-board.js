@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {bind} from 'lodash'
+import {find, bind} from 'lodash'
 
 class GameBoard extends React.Component {
 
@@ -20,6 +20,12 @@ class GameBoard extends React.Component {
   onForfeit (idx) {
     if (typeof this.props.onForfeit === 'function') {
       this.props.onForfeit()
+    }
+  }
+
+  onTie (idx) {
+    if (typeof this.props.onTie === 'function') {
+      this.props.onTie()
     }
   }
 
@@ -85,10 +91,10 @@ class GameBoard extends React.Component {
     const initialMsg = <div>
         <button onClick={bind(this.onNewGame, this)}>Start A New Game</button><br /><br />
         or<br /><br />
-        Game Code: <input type="text"
-                placeholder="Enter your game code here"
+        Connect To Game: <input type="text"
                 onChange={bind(this.onCodeChange, this)}
                 value={this.state.gameCode}
+                placeholder="6-character code"
                 /><br /><br />
         {this.state.gameCode.match(/^[a-z0-9]{6}$/i) != null ?
           <button onClick={bind(this.onJoinGame, this)}>Join Game</button> :
@@ -115,7 +121,9 @@ class GameBoard extends React.Component {
       <div>
         <p>
           <button disabled={this.props.move % 2 !== this.props.player}
-                  onClick={this.props.onForfeit}>Forfeit</button><br /><br />
+                  onClick={this.props.onForfeit}>Forfeit this game</button>
+          <button disabled={this.props.move % 2 !== this.props.player || find(this.props.board, -1) != null}
+                  onClick={this.props.onTie}>Declare a tie</button><br /><br />
           Turn: {this.props.move % 2 === this.props.player ? 'Yours' : 'Opponent\'s'}<br />
           Move: {this.props.move + 1}<br />
           Game: {this.props.game + 1}
@@ -123,7 +131,7 @@ class GameBoard extends React.Component {
             Past winners:
             <ol>
               {this.props.gameLosers.map((loser, idx) => {
-                return <li key={`game-${idx}`}>{loser === this.props.player ? 'Opponent' : 'You'}</li>
+                return <li key={`game-${idx}`}>{loser === -1 ? 'Tie' : loser === this.props.player ? 'Opponent' : 'You'}</li>
               })}
             </ol>
           </div>: null}
@@ -143,6 +151,7 @@ GameBoard.propTypes = {
 , player: PropTypes.number.isRequired
 , onCellClicked: PropTypes.func
 , onForfeit: PropTypes.func
+, onTie: PropTypes.func
 , statusText: PropTypes.string
 }
 

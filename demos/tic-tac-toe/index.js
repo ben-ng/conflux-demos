@@ -29,6 +29,7 @@ const rerender = function () {
   ReactDOM.render(
     <GameBoard statusText={lastStatusMessage}
                 onForfeit={onForfeit}
+                onTie={onTie}
                 onCellClicked={onCellClicked}
                 room={room}
                 player={player} {...lastGameState} />,
@@ -50,6 +51,10 @@ const onCellClicked = (idx) => {
 
 const onForfeit = (idx) => {
   gameState.forfeit(player, showError)
+}
+
+const onTie = (idx) => {
+  gameState.tie(player, showError)
 }
 
 if (player === 1) {
