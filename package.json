@@ -30,7 +30,7 @@
     "babel-loader": "^6.2.2",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
-    "conflux": "^1.1.4",
+    "conflux": "^1.1.5",
     "gaggle": "^2.1.0",
     "good": "^6.6.0",
     "good-console": "^5.3.1",
