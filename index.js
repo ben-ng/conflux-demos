@@ -68,8 +68,16 @@ async.auto({
       handler: function (request, reply) {
         reply(demoTemplate({
           demoName: demo.name
-        , scriptURL: demo.scriptURL
+        , scriptURL: demo.scriptDistURL
         }))
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: demo.scriptDistURL,
+      handler: function (request, reply) {
+        reply.file(demo.scriptDist)
       }
     })
 

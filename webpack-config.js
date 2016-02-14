@@ -3,7 +3,10 @@ var webpack = require('webpack')
   , opts
 
 opts = {
-  node: {
+  debug: process.env.NODE_ENV !== 'production'
+, devtool: 'source-map'
+, bail: true
+, node: {
     console: true
   , global: true
   , process: true

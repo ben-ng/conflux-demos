@@ -11,8 +11,10 @@ module.exports = function (cb) {
       , name: titlecase(demoId)
       , URL: '/' + demoId
       , scriptSource: globbed + '/index.js'
+      , scriptMap: 'dist/' + demoId + '.map.json'
       , scriptDist: 'dist/' + demoId + '.js'
-      , scriptURL: '/dist/' + demoId + '.js'
+      , scriptDistURL: '/dist/' + demoId + '.js'
+      , scriptMapURL: '/dist/' + demoId + '.map.json'
       }
     }) : null)
   })

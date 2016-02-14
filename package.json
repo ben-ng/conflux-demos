@@ -41,6 +41,7 @@
     "once": "^1.3.3",
     "rimraf": "^2.5.2",
     "titlecase": "^1.0.2",
+    "uuid": "^2.0.1",
     "webpack": "^1.12.13"
   },
   "devDependencies": {
