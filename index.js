@@ -6,6 +6,15 @@ var Hapi = require('hapi')
   , assert = require('assert')
   , async = require('async')
   , _ = require('lodash')
+  , good = require('good')
+  , goodConsole = require('good-console')
+  , goodOptions = {
+      opsInterval: 30000,
+      reporters: [{
+        reporter: goodConsole,
+        events: { log: '*', response: '*' }
+      }]
+    }
   , enhanceServer = require('gaggle').enhanceServerForSocketIOChannel
   , build = require('./build')
   , loadDemos = require('./demo-index')
@@ -30,11 +39,10 @@ server.connection({ port: process.env.PORT || 8080 })
 console.log('Starting server')
 
 async.auto({
-  inert: function (next) {
-    server.register(inert, next)
-  }
+  inert: logWrap(_.bind(server.register, server, inert), 'inert loaded')
+, good: logWrap(_.bind(server.register, server, {register: good, options: goodOptions}), 'good loaded')
 , demos: logWrap(loadDemos, 'demos globbed')
-, assets: logWrap(_.bind(glob, null, 'assets/*'), 'assets globbed')
+, assets: logWrap(async.apply(glob, 'assets/*'), 'assets globbed')
 , distExists: logWrap(function (next) {
     fs.stat('dist', function (err, stats) {
       next(null, err ? false : stats.isDirectory())
@@ -50,9 +58,6 @@ async.auto({
     }
   }, 'built demos')]
 }, function (err, results) {
-  var closeServer
-    , onQuit
-
   assert.ifError(err)
 
   // Register demo routes
@@ -70,9 +75,9 @@ async.auto({
 
     server.route({
       method: 'GET',
-      path: demo.scriptURL,
+      path: demo.scriptMapURL,
       handler: function (request, reply) {
-        reply.file(demo.scriptDist)
+        reply.file(demo.scriptMap)
       }
     })
   })
@@ -98,20 +103,7 @@ async.auto({
     }
   })
 
-  closeServer = enhanceServer(server.listener)
-
-  onQuit = function onQuit () {
-    server.listener.once('close', function () {
-      console.log('\nServer cleanly exited')
-      process.exit(0)
-    })
-
-    closeServer()
-  }
-
-  process.on('SIGINT', onQuit)
-  process.on('SIGTERM', onQuit)
-  process.on('SIGHUP', onQuit)
+  enhanceServer(server.listener)
 
   server.start(function () {
     console.log('Server running at:' + server.info.uri + ' (' + (Date.now() - startedAt) + 'ms)')

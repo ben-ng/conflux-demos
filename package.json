@@ -32,6 +32,8 @@
     "babel-preset-react": "^6.5.0",
     "conflux": "^1.1.4",
     "gaggle": "^2.1.0",
+    "good": "^6.6.0",
+    "good-console": "^5.3.1",
     "handlebars": "^4.0.5",
     "hapi": "^13.0.0",
     "inert": "^3.2.0",
