@@ -19,7 +19,7 @@ body {
   margin: 0 auto 20px auto;
 }
 
-#about {
+.left-align {
   text-align: left;
 }
 
