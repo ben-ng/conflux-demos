@@ -94,7 +94,7 @@ async.auto({
     }
   })
 
-  server.start(() => {
-    console.log('Server running at:', server.info.uri)
+  server.start(function () {
+    console.log('Server running at:' + server.info.uri + ' (' + (Date.now() - startedAt) + 'ms)')
   })
 })
