@@ -55,7 +55,7 @@ class GameBoard extends React.Component {
 
     const joinMsg = <div style={{width: '300px', height: '300px', border: '1px solid #000', padding: '1em'}}>
         <p>Join this game by opening this link on another device, or in a new tab:</p>
-        <p><a href={joinLink}>{joinLink}</a></p>
+        <p><a target="_blank" href={joinLink}>{joinLink}</a></p>
       </div>
 
     return <div>

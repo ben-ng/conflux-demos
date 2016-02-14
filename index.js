@@ -68,6 +68,7 @@ async.auto({
       handler: function (request, reply) {
         reply(demoTemplate({
           demoName: demo.name
+        , demoId: demo.id
         , scriptURL: demo.scriptDistURL
         }))
       }
