@@ -2,21 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import GameBoard from './game-board'
 import GameState, {getDefaultState} from './game-state'
-import uuid from 'uuid'
 import async from 'async'
+import {random, times} from 'lodash'
 
 const IDENT_LEN = 6
+const NON_CONFUSING_CHARACTERS = 'abcdefghjkmnpqrstuvwxyz'
 
 let room
 let player
 
-if (window.location.search != null && window.location.search.length === IDENT_LEN + 1) {
-  room = window.location.search.substring(1)
-  player = 1
+if (window.location.search != null && window.location.search.length === IDENT_LEN + 2) {
+  player = parseInt(window.location.search.substring(1, 2), 10)
+  room = window.location.search.substring(2)
 }
 else {
-  room = uuid.v4().replace(/-/g, '').substring(0, IDENT_LEN)
-  player = 0
+  room = times(IDENT_LEN, () => NON_CONFUSING_CHARACTERS[random(0, NON_CONFUSING_CHARACTERS.length-1)]).join('')
+  player = -1
 }
 
 const gameState = new GameState({room})

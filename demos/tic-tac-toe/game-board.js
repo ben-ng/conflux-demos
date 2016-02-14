@@ -3,6 +3,14 @@ import {bind} from 'lodash'
 
 class GameBoard extends React.Component {
 
+  constructor () {
+    super()
+
+    this.state = {
+      gameCode: ''
+    }
+  }
+
   onCellClicked (idx) {
     if (typeof this.props.onCellClicked === 'function') {
       this.props.onCellClicked(idx)
@@ -15,9 +23,23 @@ class GameBoard extends React.Component {
     }
   }
 
+  onCodeChange (e) {
+    this.setState({
+      gameCode: e.target.value.toLowerCase()
+    })
+  }
+
+  onNewGame () {
+    window.location = `${window.location.href.match(/^[^?]+/)[0]}?0${this.props.room}`
+  }
+
+  onJoinGame () {
+    window.location = `${window.location.href.match(/^[^?]+/)[0]}?1${this.state.gameCode}`
+  }
+
   render () {
 
-    const joinLink = `${window.location.href.match(/^[^?]+/)[0]}?${this.props.room}`
+    const joinLink = `${window.location.href.match(/^[^?]+/)[0]}?1${this.props.room}`
 
     const cellStyle = {
       width: '99px'
@@ -60,11 +82,31 @@ class GameBoard extends React.Component {
     , padding: '1em'
     }
 
+    const initialMsg = <div>
+        <button onClick={bind(this.onNewGame, this)}>Start A New Game</button><br /><br />
+        or<br /><br />
+        Game Code: <input type="text"
+                placeholder="Enter your game code here"
+                onChange={bind(this.onCodeChange, this)}
+                value={this.state.gameCode}
+                /><br /><br />
+        {this.state.gameCode.match(/^[a-z0-9]{6}$/i) != null ?
+          <button onClick={bind(this.onJoinGame, this)}>Join Game</button> :
+          null
+        }
+      </div>
+    const playerOneMsg = <div>
+            <p>Join this game with this code: <pre style={{fontSize: '2em'}}>{this.props.room}</pre></p>
+            <p>Or open this link in a new tab, or on a different device: <a target="_blank" href={joinLink}>{joinLink}</a></p>
+          </div>
+    const playerTwoMsg = <div><p>Trying to join the game...</p></div>
+
     const joinMsg = <div style={joinStyle}>
-        {this.props.player === 0 ? <div>
-          <p>Join this game by opening this link on another device, or in a new tab:</p>
-          <p><a target="_blank" href={joinLink}>{joinLink}</a></p>
-        </div> : <div><p>Trying to join the game...</p></div>}
+        {this.props.player === -1 ?
+          initialMsg :
+          this.props.player === 0 ?
+          playerOneMsg :
+          playerTwoMsg}
       </div>
 
     return <div>
@@ -72,7 +114,8 @@ class GameBoard extends React.Component {
       {this.props.playerTwoJoined ? grid: joinMsg}
       <div>
         <p>
-          <button onClick={this.props.onForfeit}>Forfeit</button><br /><br />
+          <button disabled={this.props.move % 2 !== this.props.player}
+                  onClick={this.props.onForfeit}>Forfeit</button><br /><br />
           Turn: {this.props.move % 2 === this.props.player ? 'Yours' : 'Opponent\'s'}<br />
           Move: {this.props.move + 1}<br />
           Game: {this.props.game + 1}
@@ -96,7 +139,7 @@ GameBoard.propTypes = {
 , game: PropTypes.number.isRequired
 , playerTwoJoined: PropTypes.bool.isRequired
 , gameLosers: PropTypes.arrayOf(PropTypes.number).isRequired
-, room: PropTypes.string.isRequired
+, room: PropTypes.string
 , player: PropTypes.number.isRequired
 , onCellClicked: PropTypes.func
 , onForfeit: PropTypes.func
