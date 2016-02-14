@@ -2,7 +2,7 @@
 
 Demonstrations of what you can do with [Conflux](https://github.com/ben-ng/conflux).
 
-There is a hosted version [http://conflux-demos.herokuapp.com](here). It may take a few seconds to start up if the dyno is asleep, so be patient.
+There is a hosted version [here](https://conflux-demos.herokuapp.com). It may take a few seconds to start up if the dyno is asleep, so be patient.
 
 ## Local Development
 
