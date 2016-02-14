@@ -40,6 +40,8 @@ class GameState extends EventEmitter {
     this._conflux = conflux({
       id: uuid.v4()
     , clusterSize: 2
+    , electionTimeout: {min: 5000, max: 10000}
+    , heartbeatInterval: 1000
     , channel: {
         name: 'socket.io'
       , host: window.location.href.indexOf('herokuapp') > -1 ?
