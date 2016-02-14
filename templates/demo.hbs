@@ -18,12 +18,19 @@
 
   <div id="demo-wrap">
     <h1><a href="/">Conflux Demos</a></h1>
+    <a href="https://github.com/ben-ng/conflux" class="view-on-github">View Conflux on GitHub</a>
+
     <h2><a href="/{{demoId}}">{{demoName}}</a></h2>
 
     <div id="demo">
     </div>
 
-    <a href="https://github.com/ben-ng/conflux-demos/tree/master/demos/{{demoId}}" target="_blank">Source Code</a>
+    <div id="about">
+    <h1>About This Demo</h1>
+    {{{demoReadme}}}
+    <br /><br />
+    <a href="https://github.com/ben-ng/conflux-demos/tree/master/demos/{{demoId}}" target="_blank">View This Demo's Source Code</a>
+    </div>
   </div>
 
   <script type="text/javascript" src="{{scriptURL}}"></script>

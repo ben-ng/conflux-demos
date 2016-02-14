@@ -69,6 +69,7 @@ async.auto({
         reply(demoTemplate({
           demoName: demo.name
         , demoId: demo.id
+        , demoReadme: demo.readme
         , scriptURL: demo.scriptDistURL
         }))
       }

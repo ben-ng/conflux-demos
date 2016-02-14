@@ -2,13 +2,33 @@ body {
   font-family: 'Open Sans', 'Helvetica', sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 #demo-list,
 #demo-wrap {
-  padding: 10px;
+  padding: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#demo {
+  width: 304px;
+  margin: 0 auto 20px auto;
+}
+
+#about {
+  text-align: left;
 }
 
 a {
   text-decoration: none;
+}
+
+a.view-on-github {
+  font-size: 0.9em;
 }
 
 h1 a:link,
