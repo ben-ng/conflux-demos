@@ -104,8 +104,7 @@ class GameBoard extends React.Component {
       </div>
     const playerOneMsg = <div>
             <p>
-              Join this game with this code:
-              <pre style={{fontSize: '1.2em'}}>{this.props.room}</pre>
+              Join this game with this code: <span style={{fontSize: '1.8em', fontFamily: 'monospace'}}>{this.props.room}</span>
             </p>
             <p>
               You can also open this link in a new tab, or another device:<br />
