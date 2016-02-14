@@ -53,9 +53,18 @@ class GameBoard extends React.Component {
         })}
       </div>
 
-    const joinMsg = <div style={{width: '300px', height: '300px', border: '1px solid #000', padding: '1em'}}>
-        <p>Join this game by opening this link on another device, or in a new tab:</p>
-        <p><a target="_blank" href={joinLink}>{joinLink}</a></p>
+    const joinStyle = {
+      width: '300px'
+    , height: '300px'
+    , border: '1px solid #000'
+    , padding: '1em'
+    }
+
+    const joinMsg = <div style={joinStyle}>
+        {this.props.player === 0 ? <div>
+          <p>Join this game by opening this link on another device, or in a new tab:</p>
+          <p><a target="_blank" href={joinLink}>{joinLink}</a></p>
+        </div> : <div><p>Trying to join the game...</p></div>}
       </div>
 
     return <div>

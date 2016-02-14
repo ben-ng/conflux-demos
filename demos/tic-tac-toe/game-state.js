@@ -138,15 +138,15 @@ class GameState extends EventEmitter {
   }
 
   claim (player, idx, cb) {
-    this._conflux.perform('claim', [player, idx], 5000, cb)
+    this._conflux.perform('claim', [player, idx], 10000, cb)
   }
 
   forfeit (player, cb) {
-    this._conflux.perform('forfeit', [player], 5000, cb)
+    this._conflux.perform('forfeit', [player], 10000, cb)
   }
 
   join (cb) {
-    this._conflux.perform('join', [], 5000, cb)
+    this._conflux.perform('join', [], 10000, cb)
   }
 }
 

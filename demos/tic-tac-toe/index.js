@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import GameBoard from './game-board'
 import GameState, {getDefaultState} from './game-state'
 import uuid from 'uuid'
+import async from 'async'
 
 const IDENT_LEN = 6
 
@@ -51,7 +52,38 @@ const onForfeit = (idx) => {
 }
 
 if (player === 1) {
-  gameState.join(showError)
+  let fails = 0
+
+  async.retry({times: 3, interval: 0}, function (next) {
+    lastStatusMessage = 'Trying to connect...'
+    rerender()
+
+    gameState.join(function (err) {
+      if (err != null) {
+        if (err.message.indexOf('has already joined') > -1) {
+          next()
+        }
+        else {
+          fails = fails + 1
+          lastStatusMessage = `Trying to connect... (retry #${fails})`
+          rerender()
+          next(err)
+        }
+      }
+      else {
+        next()
+      }
+    })
+  }, function (err) {
+    if (err) {
+      lastStatusMessage = 'Something is wrong, please create an issue in GitHub!'
+      rerender()
+    }
+    else {
+      lastStatusMessage = 'Connected!'
+      rerender()
+    }
+  })
 }
 
 // Initial render
