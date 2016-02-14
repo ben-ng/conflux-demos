@@ -137,6 +137,11 @@ class GameBoard extends React.Component {
           </div>: null}
         </p>
       </div>
+      <h3>About This Demo</h3>
+      <p>
+        This game is a distributed system that runs on two nodes.&nbsp;
+        No server is needed, and the game's logic is implemented in fewer than 200 lines of code.
+      </p>
     </div>
   }
 }
