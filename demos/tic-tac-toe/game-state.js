@@ -124,7 +124,7 @@ class GameState extends EventEmitter {
       break
 
       case 'FORFEIT':
-        state.board = new Array(9)
+        state.board = _.fill(new Array(9), -1)
         state.move = 0
         state.game = state.game + 1
         state.gameLosers.push(action.player)
