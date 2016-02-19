@@ -84,7 +84,7 @@ class GameState extends EventEmitter {
           , player
           }
         }
-      , forfeit: function (player, idx) {
+      , forfeit: function (player) {
           const curState = this.getProvisionalState()
 
           if (curState.move % 2 !== player) {
@@ -96,7 +96,7 @@ class GameState extends EventEmitter {
           , player: player
           }
         }
-      , tie: function (player, idx) {
+      , tie: function (player) {
           const curState = this.getProvisionalState()
 
           if (curState.move % 2 !== player) {
